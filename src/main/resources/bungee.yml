@@ -1,0 +1,4 @@
+name: Domainchecker
+version: ${project.version}
+main: com.rabbitcompany.domainchecker.DomainChecker
+description: Check from which subdoman player has joined
