@@ -28,7 +28,7 @@ public class PlayerJoinListener implements Listener {
             Domains.domains_temp.put(subdomain, Domains.domains_temp.getOrDefault(subdomain, 0) + 1);
         }
 
-        if(subdomain.startsWith("tulip")){
+        if(subdomain.equals("tulip")){
             if(e.getConnection() instanceof ProxiedPlayer){
                 ProxiedPlayer p = (ProxiedPlayer) e.getConnection();
                 p.connect(ProxyServer.getInstance().getServerInfo("tulip"));
