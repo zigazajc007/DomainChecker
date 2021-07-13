@@ -25,7 +25,7 @@ public class PlayerJoinListener implements Listener {
             DomainChecker.getInstance().getProxy().getConsole().sendMessage(new ComponentBuilder(message.replace("{player}", e.getConnection().getName()).replace("{subdomain}", subdomain)).color(ChatColor.GREEN).create());
             Domains.domains.get(subdomain).set(e.getConnection().getName(), (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(new Date(System.currentTimeMillis())));
             Domains.saveDomainFile(subdomain);
-            Domains.domains_temp.put(subdomain, Domains.domains_temp.get(subdomain));
+            Domains.domains_temp.put(subdomain, Domains.domains_temp.getOrDefault(subdomain, 0) + 1);
         }
 
         if(subdomain.startsWith("tulip")){
