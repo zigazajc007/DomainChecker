@@ -18,6 +18,7 @@ public final class DomainChecker extends Plugin {
     private static DomainChecker instance;
 
     public static Configuration config = null;
+    public static Configuration subdomains = null;
 
     @Override
     public void onEnable() {
@@ -25,6 +26,7 @@ public final class DomainChecker extends Plugin {
         try {
             mkdir();
             config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(getDataFolder(), "config.yml"));
+            subdomains = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(getDataFolder(), "subdomains.yml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,25 +43,48 @@ public final class DomainChecker extends Plugin {
         if (!getDataFolder().exists()) getDataFolder().mkdir();
 
         File file = new File(getDataFolder(), "config.yml");
-        if (file.exists()) return;
+        File file2 = new File(getDataFolder(), "subdomains.yml");
 
-        try {
-            InputStream in = getResourceAsStream("config.yml");
+        if (!file.exists()){
             try {
-                Files.copy(in, file.toPath());
-                in.close();
-            } catch (Throwable throwable) {
-                if (in == null) return;
+                InputStream in = getResourceAsStream("config.yml");
                 try {
+                    Files.copy(in, file.toPath());
                     in.close();
-                } catch (Throwable throwable1) {
-                    throwable.addSuppressed(throwable1);
+                } catch (Throwable throwable) {
+                    if (in == null) return;
+                    try {
+                        in.close();
+                    } catch (Throwable throwable1) {
+                        throwable.addSuppressed(throwable1);
+                    }
+                    throw throwable;
                 }
-                throw throwable;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
+        if(!file2.exists()){
+            try {
+                InputStream in = getResourceAsStream("subdomains.yml");
+                try {
+                    Files.copy(in, file2.toPath());
+                    in.close();
+                } catch (Throwable throwable) {
+                    if (in == null) return;
+                    try {
+                        in.close();
+                    } catch (Throwable throwable1) {
+                        throwable.addSuppressed(throwable1);
+                    }
+                    throw throwable;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public static DomainChecker getInstance() {
